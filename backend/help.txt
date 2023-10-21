@@ -1,0 +1,54 @@
+Steps:
+
+clone the repo and cd in 
+
+creation of the virtual env
+
+python -m venv venv
+
+activate the venv
+./venv/Scripts/activate
+
+install python and flask and any requirments
+*you can use requirments.txt
+python -m pip install flask
+
+    To create requirments 
+        pip freeze > requirements.txt
+
+to run the flask
+python -m flask run
+
+good to go :)
+
+check db connection respective to the local environment 
+*might be in app/__init__ atleast for now :P
+*if you getting no password provided 
+    os.environ.get("PG_PASS")
+    its due to this line 
+    add a variable in user environment with same name and your local db password or just replace it with your password
+
+
+/* creation of sequence
+-- Drop the existing primary key constraint
+ALTER TABLE public.course DROP CONSTRAINT IF EXISTS course_pkey;
+
+-- Create a new sequence
+CREATE SEQUENCE course_id_seq START 1;
+
+-- Set the default value of the id column to the next value from the sequence
+ALTER TABLE public.course
+    ALTER COLUMN id SET DEFAULT nextval('course_id_seq');
+
+-- Add a new primary key constraint using the id column
+ALTER TABLE public.course
+    ADD CONSTRAINT course_pkey PRIMARY KEY (id);
+
+
+*/
+
+
+project_row_cont = project_query.count()
+#to print sql statement
+print(project_query.statement.compile(dialect=session.bind.dialect, compile_kwargs={"literal_binds": True}))
+print(project_row_cont)
