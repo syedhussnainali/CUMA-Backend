@@ -31,6 +31,7 @@ def login():
     cur = conn.cursor()
     cur.execute("SELECT * FROM login_uwin WHERE uwinid=%s AND password=%s", (uwinid, password))
     user = cur.fetchone()
+    print(user,data)
     cur.close()
     if user:
         session['user_id'] = user[1]
