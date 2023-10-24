@@ -41,7 +41,7 @@ conn = psycopg2.connect('postgresql://keshavsharma:8ouqic74GL1gRV6HFYzkfiyIgiVNd
 engine = create_engine('postgresql://keshavsharma:8ouqic74GL1gRV6HFYzkfiyIgiVNdN8A@dpg-ckq1iehrfc9c73egiev0-a.oregon-postgres.render.com/cuma')
 
 @app.route('/')
-def test():
+def testmain():
     return 'testing'
 
 # postgres://keshavsharma:8ouqic74GL1gRV6HFYzkfiyIgiVNdN8A@dpg-ckq1iehrfc9c73egiev0-a.oregon-postgres.render.com/cuma
