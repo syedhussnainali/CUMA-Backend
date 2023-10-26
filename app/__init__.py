@@ -36,9 +36,9 @@ CORS(app, supports_credentials=True)
 
 # DB connection
 
-conn = psycopg2.connect('postgresql://keshavsharma:8ouqic74GL1gRV6HFYzkfiyIgiVNdN8A@dpg-ckq1iehrfc9c73egiev0-a.oregon-postgres.render.com/cuma')
+conn = conn = psycopg2.connect('postgresql://ealehddbpmkhay:2954cd87066a4ce0990c0c5b6372fcf4dc5a52f82bcee95d601121f3e2e7dd35@ec2-44-208-206-97.compute-1.amazonaws.com:5432/d9d8b0htabq5eb')
 
-engine = create_engine('postgresql://keshavsharma:8ouqic74GL1gRV6HFYzkfiyIgiVNdN8A@dpg-ckq1iehrfc9c73egiev0-a.oregon-postgres.render.com/cuma')
+engine = create_engine('postgresql://ealehddbpmkhay:2954cd87066a4ce0990c0c5b6372fcf4dc5a52f82bcee95d601121f3e2e7dd35@ec2-44-208-206-97.compute-1.amazonaws.com:5432/d9d8b0htabq5eb')
 
 @app.route('/')
 def testmain():
