@@ -35,6 +35,7 @@ def login():
     cur.close()
     if user:
         session['user_id'] = user[1]
+        print("session created->",session)
         return jsonify({'message': 'Login successful!','success':'true','username':user[1][0:user[1].find('@')]})
     else:
         return jsonify({'message': 'Invalid username or password','success':'false'})
