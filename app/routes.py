@@ -148,6 +148,14 @@ def getAllCoursesOfProject_route():
         return getAllCoursesOfProject(id)
     
 ##
+@app.route('/getAllCourses', methods=['GET'])
+def getAllCourses_route():
+    if not validate_login():
+        return jsonify({'message': 'User not logged in'}), 401
+    else:
+        return getAllCourses()
+
+##
 # http://localhost:5000/getProjectCourseByID?project_id=4&course_id=1
 ##
 @app.route('/getProjectCourseByID', methods=['GET'])

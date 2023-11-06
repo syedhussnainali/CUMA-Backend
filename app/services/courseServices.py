@@ -38,6 +38,35 @@ def getAllCoursesOfProject(project_id):
     except SQLAlchemyError as e:
         return jsonify({"error": "Failed to fetch courses", "message": str(e)}), 500
 
+def getAllCourses():
+    try:
+
+        session = createSession()
+        course_data = session.query(Course).all()
+        closeSession(session)
+
+        course_list = []
+        for data in course_data:
+            course_list.append({
+                "id": data.id,
+                "project_id": data.project_id,
+                "course_code": data.course_code,
+                "also_known_as": data.also_known_as,
+                "formerly_known_as": data.formerly_known_as,
+                "name": data.name,
+                "document_id": data.document_id,
+                "revision_start_date": data.revision_start_date.strftime("%Y-%m-%d"),
+                "latest_modified": data.latest_modified,
+                "state": data.state,
+                "parent_course_id": data.parent_course_id
+            })
+
+        return course_list
+
+    except SQLAlchemyError as e:
+        return jsonify({"error": "Failed to fetch courses", "message": str(e)}), 500
+
+
 def getProjectCourseByID(project_id,course_id):
     try:    
         session = createSession()
