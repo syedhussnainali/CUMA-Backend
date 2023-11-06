@@ -49,16 +49,13 @@ def getAllCourses():
         for data in course_data:
             course_list.append({
                 "id": data.id,
-                "project_id": data.project_id,
                 "course_code": data.course_code,
                 "also_known_as": data.also_known_as,
                 "formerly_known_as": data.formerly_known_as,
                 "name": data.name,
                 "document_id": data.document_id,
-                "revision_start_date": data.revision_start_date.strftime("%Y-%m-%d"),
                 "latest_modified": data.latest_modified,
-                "state": data.state,
-                "parent_course_id": data.parent_course_id
+                "state": data.state
             })
 
         return course_list
