@@ -4,6 +4,7 @@ from ..model.project import Project
 from app.services.dbServices import createSession, closeSession
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import union,and_, or_, delete
+from .utils import getSessionUserID
 
 def addProject(project,members, guests):
     try:
