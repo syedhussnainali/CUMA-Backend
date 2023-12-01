@@ -6,10 +6,10 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import union,and_, or_, delete
 from .utils import getSessionUserID
 
-def addProject(project,members, guests):
+def addProject(project,members, guests, main_user):
     try:
         session = createSession()
-        project.owner = getSessionUserID()
+        project.owner = main_user
         session.add(project)
         session.flush()
         print(project.id)
@@ -43,7 +43,7 @@ def generate_member_permissions(emails, project_id):
     email_list = []
     if emails:
         email_list = emails.split(',')
-    email_list.append(getSessionUserID())
+    email_list.append(main_user)
     # Generate project permissions for each email
     permissions = []
     for email in email_list:
@@ -58,7 +58,7 @@ def generate_guest_permissions(emails, project_id):
     email_list = []
     if emails:
         email_list = emails.split(',')
-    email_list.append(getSessionUserID())
+    email_list.append(main_user)
 
     # Generate project permissions for each email
     permissions = []
