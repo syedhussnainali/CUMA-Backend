@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, session
 
 from flask_cors import CORS
 
@@ -8,9 +8,7 @@ import os
 
 from sqlalchemy import create_engine
 
-
-
- 
+from datetime import timedelta
 
  
 
@@ -24,11 +22,11 @@ app.config['SESSION_TYPE'] = 'filesystem'  # Can be any session type you prefer
 
 app.config['SESSION_COOKIE_SECURE'] = True  # Ensure secure session cookie for production
 
-#app.config['SESSION_COOKIE_HTTPONLY'] = True  # Restrict session cookie access to HTTP-only
+app.config['SESSION_COOKIE_HTTPONLY'] = True  # Restrict session cookie access to HTTP-only
 
 app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'  # Apply strict same-site policy
 
-#Session(app)
+session(app)
 
  
 
