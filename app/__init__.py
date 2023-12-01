@@ -1,4 +1,4 @@
-from flask import Flask, session
+from flask import Flask
 
 from flask_cors import CORS
 
@@ -26,7 +26,7 @@ app.config['SESSION_COOKIE_HTTPONLY'] = True  # Restrict session cookie access t
 
 app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'  # Apply strict same-site policy
 
-session(app)
+
 
  
 
