@@ -699,7 +699,7 @@ def add_project():
             default_read_write = default_read_write
         )
         
-        return addProject(project,members, guests, session['user_id'])
+        return addProject(project,members, guests)
 
 ##
 # http://localhost:5000/project_list

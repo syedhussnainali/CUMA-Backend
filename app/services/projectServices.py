@@ -5,11 +5,10 @@ from app.services.dbServices import createSession, closeSession
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import union,and_, or_, delete
 from .utils import getSessionUserID
-
-def addProject(project,members, guests, main_user):
+def addProject(project,members, guests):
     try:
         session = createSession()
-        project.owner = main_user
+        project.owner = getSessionUserID()
         session.add(project)
         session.flush()
         print(project.id)
@@ -43,7 +42,7 @@ def generate_member_permissions(emails, project_id):
     email_list = []
     if emails:
         email_list = emails.split(',')
-    email_list.append(main_user)
+    email_list.append(getSessionUserID())
     # Generate project permissions for each email
     permissions = []
     for email in email_list:
@@ -58,7 +57,7 @@ def generate_guest_permissions(emails, project_id):
     email_list = []
     if emails:
         email_list = emails.split(',')
-    email_list.append(main_user)
+    email_list.append(getSessionUserID())
 
     # Generate project permissions for each email
     permissions = []

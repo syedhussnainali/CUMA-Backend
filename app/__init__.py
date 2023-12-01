@@ -20,13 +20,13 @@ app.config['SECRET_KEY'] = os.urandom(24)
 
 CORS(app, supports_credentials=True)
 
-#app.config['SESSION_TYPE'] = 'filesystem'  # Can be any session type you prefer
+app.config['SESSION_TYPE'] = 'filesystem'  # Can be any session type you prefer
 
-#app.config['SESSION_COOKIE_SECURE'] = True  # Ensure secure session cookie for production
+app.config['SESSION_COOKIE_SECURE'] = True  # Ensure secure session cookie for production
 
 #app.config['SESSION_COOKIE_HTTPONLY'] = True  # Restrict session cookie access to HTTP-only
 
-#app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'  # Apply strict same-site policy
+app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'  # Apply strict same-site policy
 
 #Session(app)
 
