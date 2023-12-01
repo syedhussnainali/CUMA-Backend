@@ -180,7 +180,3 @@ def deletion_project_Permissions(project_id):
     delete_statement = delete(ProjectPermissions).where(condition)
     return delete_statement
 
-def getSessionUserID():
-    user_id = session['user_id']
-    print(user_id)
-    return user_id
