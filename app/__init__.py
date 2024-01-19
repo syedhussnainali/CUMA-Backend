@@ -34,9 +34,9 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'None'  # Apply strict same-site policy
 
 # DB connection
 
-conn = conn = psycopg2.connect('postgresql://ealehddbpmkhay:2954cd87066a4ce0990c0c5b6372fcf4dc5a52f82bcee95d601121f3e2e7dd35@ec2-44-208-206-97.compute-1.amazonaws.com:5432/d9d8b0htabq5eb')
+conn = conn = psycopg2.connect(os.environ.get('DB_CONNECTION_STRING'))
 
-engine = create_engine('postgresql://ealehddbpmkhay:2954cd87066a4ce0990c0c5b6372fcf4dc5a52f82bcee95d601121f3e2e7dd35@ec2-44-208-206-97.compute-1.amazonaws.com:5432/d9d8b0htabq5eb')
+engine = create_engine(os.environ.get('DB_CONNECTION_STRING'))
 
 @app.route('/')
 def testmain():
