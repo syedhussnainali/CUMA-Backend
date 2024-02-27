@@ -201,35 +201,46 @@ def addProjectCourse_route():
     if not validate_login():
         return jsonify({'message': 'User not logged in'}), 401
     else:
-        project_id = request.json['project_id']
-        course_code = request.json['course_code']
-        also_known_as = request.json['also_known_as']
-        formerly_known_as = request.json['formerly_known_as']
-        name = request.json['name']
-        document_id = request.json['document_id']
-        revision_start_date = request.json['revision_start_date']
-        latest_modified = request.json['latest_modified']
-        state = request.json['state']
-        alignments = request.json['alignments']
-        parent_course_id = request.json['parent_course_id']
+        try:
+            project_id = request.json['project_id']
+            course_code = request.json['course_code']
+            also_known_as = request.json.get('also_known_as')  # Use get for optional fields
+            formerly_known_as = request.json.get('formerly_known_as')  # Use get for optional fields
+            name = request.json['name']
+            document_id = request.json.get('document_id')  # Use get for optional fields
+            revision_start_date_str = request.json['revision_start_date']
+            latest_modified_str = request.json.get('latest_modified', datetime.now().strftime('%Y-%m-%d'))  # Default to now if not provided
+            state = request.json.get('state')  # Use get for optional fields
+            alignments = request.json.get('alignments', [])  # Default to empty list if not provided
+            parent_course_id = request.json.get('parent_course_id')  # Use get for optional fields
 
-        projectCourse = ProjectCourse(
-            project_id = project_id,
-            course_code=course_code,
-            also_known_as=also_known_as,
-            formerly_known_as=formerly_known_as,
-            name=name,
-            document_id=document_id,
-            revision_start_date=revision_start_date,
-            latest_modified = latest_modified,
-            state = state,
-            parent_course_id = parent_course_id
-        )
-        
-        if any(value is None for value in [course_code, name]):
-            return jsonify({'message': 'Missing required parameters'}), 400
+            # Parse date strings to date objects
+            revision_start_date = datetime.strptime(revision_start_date_str, "%Y-%m-%d").date()
+            latest_modified = datetime.strptime(latest_modified_str, "%Y-%m-%d").date()
 
-        return addProjectCourse(projectCourse, alignments)
+            if any(value is None for value in [project_id, course_code, name, revision_start_date_str]):
+                return jsonify({'message': 'Missing required parameters'}), 400
+
+            projectCourse = ProjectCourse(
+                project_id=project_id,
+                course_code=course_code,
+                also_known_as=also_known_as,
+                formerly_known_as=formerly_known_as,
+                name=name,
+                document_id=document_id,
+                revision_start_date=revision_start_date,
+                latest_modified=latest_modified,
+                state=state,
+                parent_course_id=parent_course_id
+            )
+
+            # Attempt to add the project course and alignments
+            response = addProjectCourse(projectCourse, alignments)
+            return response
+
+        except Exception as e:
+            print(f"Error adding project course: {e}")  # Ideally, use proper logging
+            return jsonify({'message': 'Failed to add project course, internal server error'}), 500
     
 ##
 # http://localhost:5000/updateProjectCourseByID
