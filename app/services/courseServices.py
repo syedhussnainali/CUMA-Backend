@@ -102,13 +102,15 @@ def getProjectCourseByID(project_id,course_id):
         return jsonify({"error": "Failed to fetch courses", "message": str(e)}), 500
 
     
-def addProjectCourse(project_course,alignments):
+def addProjectCourse(project_course, alignments):
+    session = createSession()  # Start a new session
     try:
-        
-        session = createSession()
+        # Check permissions before proceeding
         if not checkPermissions(project_course.project_id, getSessionUserID(), session, True):
-            return jsonify({"error": "Permission Denied"}), 500
-        
+            # If permission check fails, return 403 Forbidden
+            return jsonify({"error": "Permission Denied"}), 403
+
+        # Proceed with adding the project course
         new_project_course = ProjectCourse(
             project_id=project_course.project_id,
             course_code=project_course.course_code,
@@ -122,15 +124,25 @@ def addProjectCourse(project_course,alignments):
             parent_course_id=project_course.parent_course_id
         )
         session.add(new_project_course)
-        session.flush()
-        print(addProjectCourseAlignments(alignments,new_project_course.id,session))
-        session.commit()
-        closeSession(session)
-        return jsonify({"success": "Project Course added successfully"})
+         # Flush to get the new project course ID
+        session.flush() 
+
+        # Add project course alignments
+        alignment_result = addProjectCourseAlignments(alignments, new_project_course.id, session)
+       # Log or handle the result as needed
+        print(alignment_result)  
+ # Commit the transaction
+        session.commit() 
+        return jsonify({"success": "Project Course added successfully"}), 200
     except SQLAlchemyError as e:
-        session.rollback()
-        closeSession(session)
+        # Rollback in case of error
+        session.rollback()  
+        # Log the error for debugging
+        print(f"SQLAlchemy Error: {e}")  
         return jsonify({"error": "Failed to add Project Course", "message": str(e)}), 500
+    finally:
+        # Ensure the session is closed in any case
+        closeSession(session)  
 
 
 def updateProjectCourseByID(project_course, alignments):
