@@ -1,7 +1,7 @@
 from app import app, conn
 from app.services.facultyServices import getFacultyByID,getAllFaculty,addFaculty,updateFacultyByID,deleteFacultyByID
 from app.services.courseServices import getAllCoursesOfProject,getProjectCourseByID,addProjectCourse,updateProjectCourseByID,deleteProjectCourse,searchProjectCourse,copyCoursesToProject,beginRevision,getAllCourses
-from app.services.programServices import getAllProgramsOfProject,getProjectProgramByID,addProjectProgram,updateProjectProgramByID,deleteProgramByID,searchProjectProgram,copyProgramsToProject,beginRevisionProgram,mapCoursesToPrograms,deleteProjectProgram,getAllProgramsCoursesOfProject
+from app.services.programServices import getAllProgramsOfProject,getProjectProgramByID,addProjectProgram,updateProjectProgramByID,deleteProgramByID,searchProjectProgram,copyProgramsToProject,beginRevisionProgram,mapCoursesToPrograms,deleteProjectProgram,getAllProgramsCoursesOfProject, getAllPrograms, getCount
 from app.services.projectServices import addProject, get_projects_of_user, get_project_by_ID, update_project
 from app.services.ugaAlignmentServices import getUgaAlignmentByID, getAllUgaAlignments, addUgaAlignment, updateUgaAlignmentByID, deleteUgaAlignmentByID
 from flask import request, jsonify, session
@@ -829,3 +829,22 @@ def delete_uga_alignment():
             return jsonify({'message': 'Missing ID parameter'}), 400
 
         return deleteUgaAlignmentByID(id), 200
+
+
+##
+# http://localhost:5000/getAllPrograms
+##
+@app.route('/getAllPrograms', methods=['GET'])
+def getAllPrograms_route():
+    if not validate_login():
+        return jsonify({'message': 'User not logged in'}), 401
+    else:
+        return getAllPrograms()
+
+
+@app.route('/getCount', methods=['GET'])
+def getCount_route():
+    if not validate_login():
+        return jsonify({'message': 'User not logged in'}), 401
+    else:
+        return getCount()

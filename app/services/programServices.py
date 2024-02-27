@@ -4,6 +4,7 @@ from ..model.projectProgram import ProjectProgram
 from ..model.project_course import ProjectCourse
 from ..model.faculty import Faculty
 from ..model.project import Project
+from ..model.course import Course
 from ..model.projectProgramAlignment import ProjectProgramAlignment
 from ..model.programAlignment import ProgramAlignment
 from ..model.projectProgramCourseXref import ProjectProgramCourseXref
@@ -374,3 +375,36 @@ def getProgramCourses(project_id, program_id):
         return course_list
     except SQLAlchemyError as e:
         return jsonify({"error": "Failed to fetch program courses", "message": str(e)}), 500
+
+
+def getAllPrograms():
+    try:
+        session = createSession()
+        program_data = session.query(Program).all()
+        closeSession(session)
+        program_list = []
+        for data in program_data:
+            program_list.append({
+                "id": data.id,
+                "name": data.name,
+                "academic_level": data.academic_level,
+                "faculty_id": data.faculty_id,
+                "document_id": data.document_id,
+                "latest_modified": data.latest_modified.strftime("%Y-%m-%d"),
+                "state": data.state,
+            })
+
+        return program_list  # Remove jsonify here
+    except SQLAlchemyError as e:
+        return jsonify({"error": "Failed to fetch programs", "message": str(e)}), 500
+
+
+def getCount():
+    try:
+        session = createSession()
+        programCount = session.query(Program).count()
+        facultyCount = session.query(Faculty).count()
+        courseCount = session.query(Course).count()
+        return {"programs": str(programCount), "faculties": str(facultyCount), "courses": str(courseCount)}
+    except SQLAlchemyError as e:
+        return jsonify({"error": "Failed to fetch programs", "message": str(e)}), 500
