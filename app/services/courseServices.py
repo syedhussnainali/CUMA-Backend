@@ -296,3 +296,21 @@ def beginRevision(project_id, course_id):
         session.rollback()
         closeSession(session)
         return jsonify({"error": "Failed to begin revision", "message": str(e)}), 500
+
+
+def deleteCourseByID(id):
+    try:
+        session = createSession()
+        course = session.query(Course).get(id)
+
+        if course is None:
+            return jsonify({"error": "Course not found"})
+
+        session.delete(course)
+        session.commit()
+        closeSession(session)
+        return jsonify({"success": "Course deleted successfully"})
+    except SQLAlchemyError as e:
+        session.rollback()
+        closeSession(session)
+        return jsonify({"error": "Failed to delete course", "message": str(e)}), 500
