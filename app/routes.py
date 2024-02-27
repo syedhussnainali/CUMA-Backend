@@ -1,6 +1,8 @@
 from app import app, conn
 from app.services.facultyServices import getFacultyByID,getAllFaculty,addFaculty,updateFacultyByID,deleteFacultyByID
-from app.services.courseServices import getAllCoursesOfProject,getProjectCourseByID,addProjectCourse,updateProjectCourseByID,deleteProjectCourse,searchProjectCourse,copyCoursesToProject,beginRevision,getAllCourses
+from app.services.courseServices import getAllCoursesOfProject, getProjectCourseByID, addProjectCourse, \
+    updateProjectCourseByID, deleteProjectCourse, searchProjectCourse, copyCoursesToProject, beginRevision, \
+    getAllCourses, deleteCourseByID
 from app.services.programServices import getAllProgramsOfProject,getProjectProgramByID,addProjectProgram,updateProjectProgramByID,deleteProgramByID,searchProjectProgram,copyProgramsToProject,beginRevisionProgram,mapCoursesToPrograms,deleteProjectProgram,getAllProgramsCoursesOfProject, getAllPrograms, getCount
 from app.services.projectServices import addProject, get_projects_of_user, get_project_by_ID, update_project
 from app.services.ugaAlignmentServices import getUgaAlignmentByID, getAllUgaAlignments, addUgaAlignment, updateUgaAlignmentByID, deleteUgaAlignmentByID
@@ -531,7 +533,19 @@ def deleteprogram():
             return jsonify({'message': 'Missing id parameter'}), 400
 
         return deleteProgramByID(id)
- 
+
+
+@app.route('/deleteCourse/<int:id>', methods=['DELETE'])
+def deleteCourse(id:int):
+    if not validate_login():
+        return jsonify({'message': 'User not logged in'}), 401
+    else:
+        if id is None:
+            return jsonify({'message':'Missing id parameter'}), 400
+
+        return deleteCourseByID(id)
+
+
 ##
 # http://localhost:5000/searchProjectProgram?search_query=test-100
 ##
