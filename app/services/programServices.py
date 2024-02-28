@@ -408,3 +408,24 @@ def getCount():
         return {"programs": str(programCount), "faculties": str(facultyCount), "courses": str(courseCount)}
     except SQLAlchemyError as e:
         return jsonify({"error": "Failed to fetch programs", "message": str(e)}), 500
+
+def getAllProgramsOfFaculty(faculty_id):
+    try: 
+        session = createSession()
+        faculty_data = session.query(Program).filter(Program.faculty_id == faculty_id).all()
+        closeSession(session)
+        faculty_list = []
+        for faculty in faculty_data:
+            faculty_list.append({
+                "id": faculty.id,
+                "name": faculty.name,
+                "academic_level": faculty.academic_level,
+                "faculty_id": faculty.faculty_id,
+                "document_id": faculty.document_id,
+                "latest_modified": faculty.latest_modified.strftime("%Y-%m-%d"),
+                "state": faculty.state
+            })
+
+        return faculty_list
+    except SQLAlchemyError as e:
+        return jsonify({"error": "Failed to fetch faculty", "message": str(e)}), 500
