@@ -534,13 +534,13 @@ def updateProjectProgramByID_route():
 #     "id": 10
 # }
 ##
-@app.route('/deleteprogram', methods=['DELETE'])
-def deleteprogram():
+
+
+@app.route('/deleteprogram/<int:id>', methods=['DELETE'])
+def deleteprogram(id:int):
     if not validate_login():
         return jsonify({'message': 'User not logged in'}), 401
     else:
-        id = request.json.get('id')
-        print("Deleting program with id:->", id)
         if id is None:
             return jsonify({'message': 'Missing id parameter'}), 400
 
