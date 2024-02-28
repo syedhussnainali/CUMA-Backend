@@ -3,7 +3,7 @@ from app.services.facultyServices import getFacultyByID,getAllFaculty,addFaculty
 from app.services.courseServices import getAllCoursesOfProject, getProjectCourseByID, addProjectCourse, \
     updateProjectCourseByID, deleteProjectCourse, searchProjectCourse, copyCoursesToProject, beginRevision, \
     getAllCourses, deleteCourseByID
-from app.services.programServices import getAllProgramsOfProject,getProjectProgramByID,addProjectProgram,updateProjectProgramByID,deleteProgramByID,searchProjectProgram,copyProgramsToProject,beginRevisionProgram,mapCoursesToPrograms,deleteProjectProgram,getAllProgramsCoursesOfProject, getAllPrograms, getCount
+from app.services.programServices import getAllProgramsOfFaculty, getAllProgramsOfProject,getProjectProgramByID,addProjectProgram,updateProjectProgramByID,deleteProgramByID,searchProjectProgram,copyProgramsToProject,beginRevisionProgram,mapCoursesToPrograms,deleteProjectProgram,getAllProgramsCoursesOfProject, getAllPrograms, getCount
 from app.services.projectServices import addProject, get_projects_of_user, get_project_by_ID, update_project
 from app.services.ugaAlignmentServices import getUgaAlignmentByID, getAllUgaAlignments, addUgaAlignment, updateUgaAlignmentByID, deleteUgaAlignmentByID
 from flask import request, jsonify, session
@@ -534,12 +534,13 @@ def updateProjectProgramByID_route():
 #     "id": 10
 # }
 ##
-@app.route('/deleteprogram', methods=['POST'])
+@app.route('/deleteprogram', methods=['DELETE'])
 def deleteprogram():
     if not validate_login():
         return jsonify({'message': 'User not logged in'}), 401
     else:
-        id = request.json['id']
+        id = request.json.get('id')
+        print("Deleting program with id:->", id)
         if id is None:
             return jsonify({'message': 'Missing id parameter'}), 400
 
@@ -873,3 +874,17 @@ def getCount_route():
         return jsonify({'message': 'User not logged in'}), 401
     else:
         return getCount()
+
+##
+# http://localhost:5000/getAllProgramsOfFaculty?faculty_id=1
+##
+@app.route('/getAllProgramsOfFaculty', methods=['GET'])
+def getAllProgramsOfFaculty_route():
+    if not validate_login():
+        return jsonify({'message': 'User not logged in'}), 401
+    else:
+        faculty_id = request.args.get('faculty_id')
+        if faculty_id is None:
+            return jsonify({'message': 'Missing faculty Id parameter'}), 400
+        
+        return getAllProgramsOfFaculty(faculty_id), 200
