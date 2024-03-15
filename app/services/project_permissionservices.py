@@ -9,6 +9,7 @@ from ..model.project import Project
 #   true if read and write
 #   flase if read
 def checkPermissions(project_id, user_id, session, read_write_flag):
+    print(project_id, user_id, session, read_write_flag)
     project = aliased(Project)
     projectPermissions = aliased(ProjectPermissions)
 
