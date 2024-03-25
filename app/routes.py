@@ -4,7 +4,7 @@ from app.services.facultyServices import (
     getAllFaculty,
     addFaculty,
     updateFacultyByID,
-    deleteFacultyByID,
+    deleteFacultyByID, getFacultyCount,
 )
 from app.services.courseServices import (
     getAllCoursesOfProject,
@@ -1021,3 +1021,15 @@ def getAllProgramsOfFaculty_route():
             return jsonify({"message": "Missing faculty Id parameter"}), 400
 
         return getAllProgramsOfFaculty(faculty_id), 200
+
+
+##
+# http://localhost:5000/getFacultyCount
+##
+@app.route('/getFacultyCount', methods=['GET'])
+def getFacultyCounts():
+    if not validate_login():
+        return jsonify({'message': 'User not logged in'}), 401
+    else:
+        return getFacultyCount()
+

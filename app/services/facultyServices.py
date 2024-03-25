@@ -4,6 +4,9 @@ from app.services.dbServices import createSession,closeSession
 import json
 from sqlalchemy.exc import SQLAlchemyError
 
+from ..model.program import Program
+
+
 def getAllFaculty():
     try:
         session = createSession()
@@ -83,3 +86,23 @@ def deleteFacultyByID(id):
         session.rollback()
         closeSession(session)
         return jsonify({"error": "Failed to delete faculty", "message": str(e)}), 500
+
+
+def getFacultyCount():
+    try:
+        session = createSession()
+        faculty_counts = {}
+        # Query to get counts based on faculty_id
+        results = session.query(Program.faculty_id).all()
+        for result in results:
+            faculty_id = result[0]
+            if faculty_id in faculty_counts:
+                faculty_counts[faculty_id] += 1
+            else:
+                faculty_counts[faculty_id] = 1
+
+        session.close()
+        return jsonify(faculty_counts)
+    except SQLAlchemyError as e:
+        return jsonify({"error": "Failed to fetch counts", "message": str(e)}), 500
+
