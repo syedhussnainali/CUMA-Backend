@@ -429,3 +429,20 @@ def getAllProgramsOfFaculty(faculty_id):
         return faculty_list
     except SQLAlchemyError as e:
         return jsonify({"error": "Failed to fetch faculty", "message": str(e)}), 500
+
+
+def updateProgram(data):
+    try:
+        session = createSession()
+        program_data = session.query(Program).get(data['id'])
+        if program_data is None:
+            return {"error": "Program not found"}
+
+        program_data.name = data['name']
+        session.commit()
+        session.close()
+        return {"success": "Program updated successfully"}
+    except Exception as e:
+        session.rollback()
+        session.close()
+        return {"error": "Failed to update Program", "message": str(e)}

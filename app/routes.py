@@ -32,7 +32,7 @@ from app.services.programServices import (
     deleteProjectProgram,
     getAllProgramsCoursesOfProject,
     getAllPrograms,
-    getCount,
+    getCount, updateProgram,
 )
 from app.services.projectServices import (
     addProject,
@@ -1033,3 +1033,10 @@ def getFacultyCounts():
     else:
         return getFacultyCount()
 
+
+@app.route("/updatePrograms", methods=["PUT"])
+def updatePrograms():
+    data = request.json
+    if data is None:
+        return jsonify({"message": "Missing request body"}), 400
+    return updateProgram(data)
